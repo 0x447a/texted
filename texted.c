@@ -4,17 +4,17 @@
 #include <termios.h>
 #include <unistd.h>
 
-struct terminos orig_terminos;
+struct termios orig_termios;
 
 void disableRawMode(){
-  tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termonis);
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios);
 }
 
 void enableRawMode(){
-  tcgetattr(STDIN_FILENO, &orig_terminos);
+  tcgetattr(STDIN_FILENO, &orig_termios);
   atexit(disableRawMode);
   
-  struct terminos raw = orig_terminos;
+  struct termios raw = orig_termios;
   raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
   raw.c_oflag &= ~(OPOST);
   raw.c_cflag |=  (CS8);
